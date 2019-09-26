@@ -1,5 +1,5 @@
 from app import create_app,db
-from app.models import Writer,Blog
+from app.models import Writer,Blog,Comment
 from flask_script import Manager,Server
 
 
@@ -18,7 +18,7 @@ def test():
 
 @manager.shell
 def make_shell_context():
-    return dict(app = app,db = db,Writer = Writer,Blog=Blog )
+    return dict(app = app,db = db,Writer = Writer,Blog=Blog,Comment=Comment )
 
 
 if __name__ == '__main__':

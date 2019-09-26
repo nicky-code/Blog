@@ -13,7 +13,7 @@ class BlogTest(unittest.TestCase):
         self.new_blog = Blog()
 
     def test_instance(self):
-        self.assertTrue(isinstance(self.new_comment,Comment))
+        self.assertTrue(isinstance(self.new_blog,Blog))
 
 
 if __name__ == '__main__':

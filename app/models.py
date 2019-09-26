@@ -1,21 +1,20 @@
+from . import db
 
 
 
 
 
 
+class Writer(db.Model):
+    __tablename__ = 'users'
+    id = db.Column(db.Integer,primary_key = True)
+    username = db.Column(db.String(255))
 
-class Writer:
-    '''
-    Writer class to define Writer Objects
-    '''
-
-    def __init__(self,id,username,email,password):
-        self.id =id
-        self.username = username
-        self.email = email
-        self.password = password
-
+    def __repr__(self):
+        return f'User {self.username}'
+    
+    
+    
         
     def save_writer(self):
         Writer.all_writers.append(self)
@@ -25,9 +24,9 @@ class Writer:
         return response  
     
     
-class BlogPost:
+class Blog(db.Model):
     '''
-    BlogPost class to define BlogPost Objects
+    Blog class to define Blog Objects
     '''
 
     def __init__(self,id,title,content,date_posted):
@@ -38,10 +37,10 @@ class BlogPost:
         
         
     def save_(self):
-        BlogPost.all_blogPost.append(self)
+        Blog.all_blog.append(self)
         
     @classmethod
-    def get_blogPost(cls,id):
+    def get_blog(cls,id):
         return response  
     
         

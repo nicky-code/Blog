@@ -1,0 +1,28 @@
+{% macro displayBlogList(blog_list) %}
+
+    {% for b in blog_list %}
+    <a href="{{url_for('main.new_blog',id=c.id)}}"><p>{{b.title|upper}}</p></a>
+        <li>{{ b.title}}</li>
+        
+            <div class="container">   
+                <div class="row">
+                    <div class="good">
+                        <div class="col-md-12">
+                            <p>Blog Title : {{b.title|upper}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-10 col-sm-12">
+                        <h3>Blog Post : {{b.post}}</h3>
+                        <!-- {% for com in pitches.comments %}
+                    <p><strong>{{com.username}} feedback:</strong>{{com.feedback}}</pc>
+                {% endfor %} -->
+                    </div>
+                    
+                </div>
+            </div>
+            
+        {% endfor %}
+    
+    {% endmacro %}

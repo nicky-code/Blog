@@ -1,14 +1,44 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        {% if title %}
-        <title> {{ title }}</title>
-        {% else %}
-        <title> Welcome to the best Blog website </title>
-        {% endif %}
-    </head>
-    <body>
+{% extends 'base.html'%}
+{% import 'macros.html' as macro%}
+{% import 'bootstrap/wtf.html' as wtf %}
 
-    </body>
-</html>
+
+{% block styles%}
+    {{ super() }}
+    <link rel="stylesheet" href="{{url_for('static',filename='css/index.css')}}">
+{% endblock %}
+
+{% block content %}
+<br>
+    <div class="container-fluid" style="font-family: 'Russo One', sans-serif;">
+    <div class="row"> 
+        
+        <div class="container" id="block-text">
+        <br>
+        <div class="col-md-6">
+            <h1 style="color: rgb(148, 44, 44); font-style:italic">WELCOME TO THE BLOG APPLICATION</h1>
+        </div>
+        
+
+        <br>
+        <div class="col-md-6">
+        <p style="font-size: 20px;color: rgb(19, 17, 17)"> <strong> The past few weeks have proven that you can learn anything. And a great way to solidify your knowledge is to teach it to other people. There is no better way to express your ideas and opinions than with a personal blog. </strong> </p>
+        </div>
+    </div>
+</div>
+
+<hr>
+<div class="container">
+    <br>
+    <h2 style="font-style: italic"> <strong>ADD A BLOG </strong></h2>
+    <a class="btn btn-danger" href="/add/blog/new/" style="background-color:#575e69; float:left;"><span aria-hidden="true">Submit</span></a>
+    <strong style="font-size: 20px;">{{ macro.displayBlogList(blog) }} </strong>
+    <br>
+    <br>
+
+
+</div>
+
+
+
+{% endblock  %}

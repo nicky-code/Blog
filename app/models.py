@@ -16,7 +16,8 @@ class Writer(UserMixin,db.Model):
     email = db.Column(db.String(100),unique = True,index = True)
     password_hash = db.Column(db.String(80))
     blogs = db.relationship('Blog')
-    # comments = db.relationship('Comment')
+    age=db.Column(db.String(233))
+    
     
     
     @property
@@ -50,7 +51,7 @@ class Blog(db.Model):
     title = db.Column(db.String(80))
     post = db.Column(db.String(255))
     writer_id = db.Column(db.Integer, db.ForeignKey('writers.id'))
-    # comments = db.relationship('Comment')
+    
 
     
     def save_blog(self):
@@ -66,6 +67,11 @@ class Blog(db.Model):
         blogs = Blog.query.filter_by(writer_id=id).all()
         return blogs
     
+    def get_blog(cls):
+        blogs = Blog.query.all()
+        return blogs
+        
+        
     @classmethod
     def count_blogs(cls,uname):
         writer = Writer.query.filter_by(username=uname).first()

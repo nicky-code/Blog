@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        {% if title %}
+        <title> {{ title }}</title>
+        {% else %}
+        <title> Welcome to My Blog website </title>
+        {% endif %}
+    </head>
+    <body style="background-image: url('https://www.sterlingcheck.com/wp-content/uploads/2018/09/blog-listing.jpg'); background-repeat: no-repeat;background-size: cover" >
+        {% extends 'bootstrap/base.html'%}
+        
+        <!-- Content block -->
+        {% include 'navbar.html' %}
+
+        {% block content %}
+        
+        {% endblock%}
+    </body>
+</html>

@@ -11,8 +11,8 @@ class Writer(db.Model):
     username = db.Column(db.String(255))
     email = db.Column(db.String(255),unique = True,index = True)
      pass_secure = db.Column(db.String(60))
-    # blogs = db.relationship('Blog')
-    # comments = db.relationship('Comment')
+    blogs = db.relationship('Blog')
+    comments = db.relationship('Comment')
     
     
     @property
@@ -42,24 +42,39 @@ class Writer(db.Model):
         return response  
     
     
-# class Blog(db.Model):
-#     '''
-#     Blog class to define Blog Objects
-#     '''
+class Blog(db.Model):
+    __tablename__ = 'blogs'
+    id = db.Column(db.Integer,primary_key=True)
+    title = db.Column(db.String(255))
+    post = db.Column(db.String(255))
+    writer_id = db.Column(db.Integer, db.ForeignKey('writers.id'))
+    comments = db.relationship('Comment')
 
-#     def __init__(self,id,title,content,date_posted):
-#         self.id =id
-#         self.title = title
-#         self.content = content
-#         self.date_posted = date_posted
+    
+    def save_blog(self):
+        db.session.add(self)
+        db.session.commit()
         
+    @classmethod
+    def clear_blogs(cls):
+        Blog.all_blogs.clear()
         
-#     def save_(self):
-#         Blog.all_blog.append(self)
+    
+    def get_blogs(id):
+        blogs = Blog.query.filter_by(writer_id=id).all()
+        return blogs
+    
+    @classmethod
+    def count_blogs(cls,uname):
+        writer = Writer.query.filter_by(username=uname).first()
+        blogs = Blog.query.filter_by(writer_id=writer.id).all()
         
-#     @classmethod
-#     def get_blog(cls,id):
-#         return response  
+        blogs_count = 0
+        for blog in blogs:
+            blogs_count += 1
+            
+        return blogs_count    
+    
     
         
         

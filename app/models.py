@@ -1,18 +1,18 @@
 from . import db
 from werkzeug.security import generate_password_hash,check_password_hash
+from flask_login import UserMixin
 
 
 
 
-
-class Writer(db.Model):
-    __tablename__ = 'users'
+class Writer(UserMixin,db.Model):
+    __tablename__ = 'writers'
     id = db.Column(db.Integer,primary_key = True)
     username = db.Column(db.String(255))
     email = db.Column(db.String(255),unique = True,index = True)
      pass_secure = db.Column(db.String(60))
     blogs = db.relationship('Blog')
-    comments = db.relationship('Comment')
+    # comments = db.relationship('Comment')
     
     
     @property
@@ -29,7 +29,7 @@ class Writer(db.Model):
         
     
     def __repr__(self):
-        return f'User {self.username}'
+        return f'Writer {self.username}'
     
     
     
@@ -48,7 +48,7 @@ class Blog(db.Model):
     title = db.Column(db.String(255))
     post = db.Column(db.String(255))
     writer_id = db.Column(db.Integer, db.ForeignKey('writers.id'))
-    comments = db.relationship('Comment')
+    # comments = db.relationship('Comment')
 
     
     def save_blog(self):

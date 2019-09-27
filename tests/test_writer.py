@@ -1,20 +1,18 @@
 import unittest
 from app.models import Writer
 
-class WriterTest(unittest.TestCase):
-    '''
-    Test Class to test the behaviour of the Writer class
-    '''
+class WriterModelTest(unittest.TestCase):
 
     def setUp(self):
-        '''
-        Set up method that will run before every Test
-        '''
-        self.new_writer = Writer()
+        self.new_writer = Writer(password = 'apple')
 
-    def test_instance(self):
-        self.assertTrue(isinstance(self.new_writer,Writer))
+    def test_password_setter(self):
+        self.assertTrue(self.new_writer.pass_secure is not None)
 
+    def test_no_access_password(self):
+        with self.assertRaises(AttributeError):
+            self.new_writer.password
 
-if __name__ == '__main__':
-    unittest.main()
+    def test_password_verification(self):
+        self.assertTrue(self.new_writer.verify_password('apple'))
+        

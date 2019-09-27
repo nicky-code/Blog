@@ -1,7 +1,11 @@
 from . import db
 from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import UserMixin
+from . import login_manager
 
+@login_manager.user_loader
+def load_user(writer_id):
+    return Writer.query.get(int(writer_id))
 
 
 
@@ -32,14 +36,12 @@ class Writer(UserMixin,db.Model):
         return f'Writer {self.username}'
     
     
-    
-        
     def save_writer(self):
         Writer.all_writers.append(self)
         
     @classmethod
-    def get_writes(cls,id):
-        return response  
+    def clear_writers(cls):
+        Writer.all_writers.clear()
     
     
 class Blog(db.Model):

@@ -8,9 +8,9 @@ from flask_login import UserMixin
 class Writer(UserMixin,db.Model):
     __tablename__ = 'writers'
     id = db.Column(db.Integer,primary_key = True)
-    username = db.Column(db.String(255))
-    email = db.Column(db.String(255),unique = True,index = True)
-     pass_secure = db.Column(db.String(60))
+    username = db.Column(db.String(100))
+    email = db.Column(db.String(100),unique = True,index = True)
+    password_hash = db.Column(db.String(80))
     blogs = db.relationship('Blog')
     # comments = db.relationship('Comment')
     
@@ -45,7 +45,7 @@ class Writer(UserMixin,db.Model):
 class Blog(db.Model):
     __tablename__ = 'blogs'
     id = db.Column(db.Integer,primary_key=True)
-    title = db.Column(db.String(255))
+    title = db.Column(db.String(80))
     post = db.Column(db.String(255))
     writer_id = db.Column(db.Integer, db.ForeignKey('writers.id'))
     # comments = db.relationship('Comment')

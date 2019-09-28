@@ -2,28 +2,37 @@
 
 {% block content %}
 <div class="container">
-<div class="row">
-<!-- displaying  Username-->
-  <div class="col-md-4">
-    <h3 style="font-style: italic"> {{writer.username| capitalize}} </h3>
+    <div class="row">
+    <!-- displaying  Username-->
+        <div class="col-md-4">
+        <h3 style="font-style: italic"> {{writer.username| capitalize}} </h3>
 
     <!--Displaying user bio-->
-    {% if writer.bio %}
-      <p style="font-style: italic"> {{writer.bio}}</p>
-    {%else%}
-      <p> {{writer.username| capitalize}} has no bio </p>
-    {% endif %}
-  </div>
+        {% if writer.bio %}
+        <p style="font-style: italic"> {{writer.bio}}</p>
+        {%else%}
+        <p> {{writer.username| capitalize}} has no bio </p>
+        {% endif %}
+        </div>
 
-  <!--Display profile photo-->
-  <div class="col-md-4">
+    <!--Display profile photo-->
+        <div class="col-md-4">
 
-    {% if writer.profile_pic_path %}
-    <img src="{{url_for('static',filename=writer.profile_pic_path)}}" alt="" class="img-thumbnail">
-    {%else%}
-    <p>No profile picture</p>
-    {% endif %}
-  </div>
-</div>
+        {% if writer.profile_pic_path %}
+        <img src="{{url_for('static',filename=writer.profile_pic_path)}}" alt="" class="img-thumbnail">
+        {%else%}
+        <p>No profile picture</p>
+        {% endif %}
+        </div>
+
+    <!--Update profile photo-->        
+        <div class="col-md-4">
+            {% if writer == current_user %}
+            <a href="{{url_for('main.update_profile',uname=writer.username)}}">Edit profile</a>
+            {% endif %}
+
+        </div>
+
+    </div>
 </div>
 {% endblock %}

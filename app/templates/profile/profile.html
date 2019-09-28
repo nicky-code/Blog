@@ -5,11 +5,11 @@
 <div class="row">
 <!-- displaying  Username-->
   <div class="col-md-4">
-    <h3> {{writer.username| capitalize}} </h3>
+    <h3 style="font-style: italic"> {{writer.username| capitalize}} </h3>
 
     <!--Displaying user bio-->
     {% if writer.bio %}
-      <p> {{writer.bio}}</p>
+      <p style="font-style: italic"> {{writer.bio}}</p>
     {%else%}
       <p> {{writer.username| capitalize}} has no bio </p>
     {% endif %}
@@ -19,7 +19,7 @@
   <div class="col-md-4">
 
     {% if writer.profile_pic_path %}
-    <img src="{{url_for('static',filename=user.profile_pic_path)}}" alt="" class="img-thumbnail">
+    <img src="{{url_for('static',filename=writer.profile_pic_path)}}" alt="" class="img-thumbnail">
     {%else%}
     <p>No profile picture</p>
     {% endif %}

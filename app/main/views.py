@@ -1,8 +1,8 @@
-from flask import render_template
+from flask import render_template,request,redirect,url_for,abort
 from . import main
 from flask_login import login_required
 from ..models import Writer,Blog
-from .forms import  BlogForm
+from .forms import BlogForm
 from .. import db
 
 
@@ -40,3 +40,12 @@ def new_blog():
     title = 'New blog'
     return render_template('new_blog.html', blog_form = form, title = title)
      
+     
+@main.route('/writer/<uname>')
+def profile(uname):
+    writer = Writer.query.filter_by(username = uname).first()
+
+    if writer is None:
+        abort(404)
+
+    return render_template("profile/profile.html", writer = writer)

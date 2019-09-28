@@ -14,9 +14,10 @@ class Writer(UserMixin,db.Model):
     id = db.Column(db.Integer,primary_key = True)
     username = db.Column(db.String(100))
     email = db.Column(db.String(100),unique = True,index = True)
-    password_hash = db.Column(db.String(80))
-    blogs = db.relationship('Blog')
-    age=db.Column(db.String(233))
+    password_secure = db.Column(db.String(80))
+    blogs = db.relationship('Blog' backref='blogger' lazy='dynamic')
+    bio = db.Column(db.String(255))
+    profile_pic_path = db.Column(db.String())
     
     
     

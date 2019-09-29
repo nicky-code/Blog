@@ -12,13 +12,11 @@ def getQuotes():
     '''
     Function that gets the json response to our url request
     '''
-    get_movies_url = base_url.format(category,api_key)
+    get_quotes_url = base_url.format(quote,QUOTE_API_BASE_URL)
     quote_object=None
-    with urllib.request.urlopen(get_movies_url) as url:
+    with urllib.request.urlopen(get_quotes_url) as url:
         get_quote_data = url.read()
         new_quote = json.loads(get_quote_data)
-    # random_quote = requests.get(base_url)
-    # new_quote = random_quote.json()
         id = new_quote.get("id")
         author = new_quote.get("author")
         quote = new_quote.get("quote")

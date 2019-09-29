@@ -101,7 +101,7 @@ class Comment(db.Model):
         
     @classmethod
     def get_comments(self,id):
-        comment = Comments.query.filter_by(writers_id = id).all()
+        comment = Comment.query.filter_by(writers_id = id).all()
         return comment       
         
         

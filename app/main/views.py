@@ -128,5 +128,25 @@ def new_comment(id):
 def delete_post(id):
     blog=Blog.query.filter_by(id=id).first()
     
+    if blog is None:
+        abort(404)
+        db session.delete(blog)
+        db session.commit()
+     
+    return redirect(url_for('main.index'))
+
+
+@main.route("/comment/<int:id>/delete", methods=['GET', 'POST'])
+@login_required
+def delete_comment(id):
+    comment= Comment.query.filter_by(id=id).first()
+    
+    if comment is None:
+        abort(404)
+        db session.delete(comment)
+        db session.commit()
+     
+    return redirect(url_for('main.index'))
+
     
         

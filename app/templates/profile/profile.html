@@ -16,15 +16,24 @@
         </div>
 
     <!--Display profile photo-->
-        <div class="col-md-4">
-
+    <div class="col-md-4">
         {% if writer.profile_pic_path %}
+    
         <img src="{{url_for('static',filename=writer.profile_pic_path)}}" alt="" class="img-thumbnail">
+    
         {%else%}
         <p>No profile picture</p>
+    
         {% endif %}
-        </div>
-
+    
+            {% if writer == current_user %}
+        <form  action="{{url_for('main.update_pic',uname=writer.username)}}" method="post" enctype = "multipart/form-data">
+    
+          <input type="file"  name="photo" class="form-control" required>
+          <input type="submit">
+        </form>
+          {% endif %}
+    </div>
     <!--Update profile photo-->        
         <div class="col-md-4">
             {% if writer == current_user %}

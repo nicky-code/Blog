@@ -3,7 +3,7 @@ from . import main
 from flask_login import login_required
 from ..models import Writer,Blog
 from .forms import BlogForm,UpdateProfile
-from .. import db
+from .. import db,photos
 
 
 @main.route('/')
@@ -69,3 +69,15 @@ def update_profile(uname):
         return redirect(url_for('.profile',uname=writer.username))
 
     return render_template('profile/update.html',form =form)
+
+
+@main.route('/writer/<uname>/update/pic',methods= ['POST'])
+@login_required
+def update_pic(uname):
+    writer = Writer.query.filter_by(username = uname).first()
+    if 'photo' in request.files:
+        filename = photos.save(request.files['photo'])
+        path = f'photos/{filename}'
+        writer.profile_pic_path = path
+        db.session.commit()
+    return redirect(url_for('main.profile',uname=uname))

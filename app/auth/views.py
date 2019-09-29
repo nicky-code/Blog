@@ -4,6 +4,7 @@ from flask_login import login_user,logout_user,login_required
 from ..models import Writer
 from .forms import LoginForm,RegistrationForm
 from .. import db
+from ..email import mail_message
 
 @auth.route('/login')
 def login():
@@ -27,6 +28,10 @@ def register():
         writer = Writer(email = form.email.data, username = form.username.data,password = form.password.data)
         db.session.add(writer)
         db.session.commit()
+        
+        mail_message("Welcome to Blog-Application","email/welcome_writer",writer.email,writer=writer)
+
+        
         return redirect(url_for('auth.login'))
         title = "New Account"
     return render_template('auth/register.html',registration_form = form)

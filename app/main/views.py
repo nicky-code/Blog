@@ -4,7 +4,8 @@ from flask_login import login_required, current_user
 from ..models import Writer,Blog
 from .forms import BlogForm,UpdateProfile,CommentForm
 from .. import db,photos
-
+import requests
+from ..requests import getQuotes
 
 @main.route('/')
 def index():
@@ -13,12 +14,12 @@ def index():
     '''
     
     blogs = Blog.query.all()
-    
+    quotes =getQuotes
     
     print(blogs)
 
     
-    return render_template('index.html', blogs= blogs)
+    return render_template('index.html', blogs= blogs,quotes=quotes)
 
 
 @main.route('/add/blog/new/<int:id>', methods = ['GET','POST'])

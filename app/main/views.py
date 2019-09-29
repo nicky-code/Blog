@@ -1,10 +1,10 @@
 from flask import render_template,request,redirect,url_for,abort
 from . import main
 from flask_login import login_required, current_user
-from ..models import Writer,Blog
+from ..models import Writer,Blog,Comment
 from .forms import BlogForm,UpdateProfile,CommentForm
 from .. import db,photos
-import requests
+# import requests
 from ..requests import getQuotes
 
 @main.route('/')
@@ -13,13 +13,12 @@ def index():
     View root page function that returns the index page and its data
     '''
     
-    blogs = Blog.query.all()
+    blog = Blog.query.all()
+    comment=Comment.get_comments(id)
     quotes =getQuotes
     
-    print(blogs)
-
     
-    return render_template('index.html', blogs= blogs,quotes=quotes)
+    return render_template('index.html', current_user= current_user, blog= blog,quotes=quotes)
 
 
 @main.route('/add/blog/new/<int:id>', methods = ['GET','POST'])
@@ -45,11 +44,11 @@ def new_blog():
 @main.route('/writer/<uname>')
 def profile(uname):
     writer = Writer.query.filter_by(username = uname).first()
-
+    blog = Blog.query.filter_by(writer_id=current_user.id).first()
     if writer is None:
         abort(404)
 
-    return render_template("profile/profile.html", writer = writer)
+    return render_template("profile/profile.html", writer = writer,blog=blog)
 
 
 @main.route('/writer/<uname>/update',methods = ['GET','POST'])
@@ -122,4 +121,12 @@ def new_comment(id):
         
         return redirect(url_for('.index',uname=current_user.username))
     return render_template('comment.html',title=title, comment_form=form, blogs=blogs, comment=comment)
+
+
+@main.route("/blog/<int:id>/delete", methods=['GET', 'POST'])
+@login_required
+def delete_post(id):
+    blog=Blog.query.filter_by(id=id).first()
+    
+    
         

@@ -2,24 +2,34 @@
 
     {% for b in blog_list %}
     <a href="{{url_for('main.new_blog',id=b.id)}}"><p>{{b.title|upper}}</p></a>
-    {% for writers in b.blogs %}
+    {% for blogs in b.blogger %}
         <div class="container">   
             <div class="row">
                 <div class="good">
                     <div class="col-md-12">
-                        <p>Blog Title : {{b.title}}</p>
+                        <p><strong> Blog Title : </strong> {{blogs.title}}</p>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-10">
-                        <h3>Blog Post : {{b.post}}</h3>
-                        <!-- {% for com in blogs.comments %}
-                    <p><strong>{{com.username}} feedback:</strong>{{com.feedback}}</p>
-                {% endfor %} -->
+                        <h3><strong>Blog Post : </strong> {{blogs.post}}</h3>
+                        <p><strong>Blog PostedAt :</strong> {{blogs.postedAt}}</p>
+                        <p><strong>Author`s Profile name:</strong>{{b.writers.username}}</p>
+                        <p>For more information,kindly visit my Profile <a href="{{url_for('main.profile',uname=b.writers.username)}}">Click here</a></p>
+                        {% for com in b.comment %}
+                    <p><strong>Comment:</strong>{{com.feedback}}</p>
+                    <p><a href="{{url_for('main.delete_comment',id=com.id)}}">Click here if you want to delete your Comment</a></p>
+                {% endfor %}
                     </div>
+                    <a href="{{url_for('main.new_comment',id=b.id)}}"><button type="button" class="btn btn-secondary" style="font-style: italic">ADD COMMENT</button></a>
+                    <a href="{{url_for('main.delete_post',id=b.id)}}"><button type="button" class="btn btn-secondary" style="font-style: italic">DELETE</button></a>
+                    <a href="{{url_for('main.blog_update',id=b.id)}}"><button type="button" class="btn btn-secondary" style="font-style: italic">UPDATE</button></a>
                     
                 </div>
+
+
+
             </div>
         
     {% endfor %}

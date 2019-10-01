@@ -33,7 +33,7 @@
         <div class="col-md-6">
             <br>
             <h2 style="font-style: italic"> <strong>ADD A BLOG </strong></h2>
-            <a class="btn btn-danger" href="{{url_for('main.new_blog',id=current_user.id)}}" style="background-color:#575e69; float:left;"><span aria-hidden="true">Submit</span></a>
+            <a class="btn btn-danger" href="{{url_for('main.new_blog')}}" style="background-color:#575e69; float:left;"><span aria-hidden="true">Submit</span></a>
             <strong style="font-size: 20px;">{{ macro.displayBlogList(blog) }} </strong>
             <br>
             <br>

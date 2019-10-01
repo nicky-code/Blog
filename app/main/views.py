@@ -21,13 +21,13 @@ def index():
     return render_template('index.html',current_user=current_user,blog= blog, comment=comment, quotes=quotes)
 
 
-@main.route('/add/blog', methods = ['GET','POST'])
+@main.route('/add/blog/', methods = ['GET','POST'])
 @login_required
-def new_blog(id):
+def new_blog():
     '''
     View new route function that returns a page with a form to create a blog
     '''
-    blog=Blog.query.filter_by(id=current_user.id)
+    blog=Blog.query.filter_by(id=current_user.id).first()
     writer = Writer.query.filter_by(id = current_user.id).first()
     form = BlogForm()
     
@@ -35,13 +35,13 @@ def new_blog(id):
         title = form.title.data
         post = form.post.data
         
-        new_blog= Blog(post=post)
+        new_blog= Blog(post=post,title=title)
         new_blog.save_blog()
         
         return redirect(url_for('.index'))
     
     title = 'New blog'
-    return render_template('new_blog.html', blog_form = form,title = title,current_user=current_user,)
+    return render_template('new_blog.html', blog_form = form,current_user=current_user)
      
      
 @main.route('/writer/<uname>')
@@ -89,22 +89,27 @@ def update_pic(uname):
 @main.route('/blog/update/<int:id>', methods = ['GET','POST'])
 @login_required
 def blog_update(id):
-    form = BlogForm()
-    blog = get_blog(id)
+    
+    
+    blog=Blog.query.filter_by(id=id).first()
+    if blog is None:
+        abort(404)
+    form=BlogForm()
     if form.validate_on_submit():
+        blog.title=form.title.data
+        blog.post=form.post.data
         
-        name = form.name.data
+       
+
+        db.session.commit()
         
-
-        # Updated review instance
-        new_blog = Blog(id=blog.id,name=name)
-
-        # save review method
-        new_blog.save_blog()
-        return redirect(url_for('.index',id = blog.id ))
-
-    title = f'{blog.title} blogpost'
-    return render_template('new_blog.html',title = title, blog_form=form, blog=blog)
+        return redirect(url_for('.index',blog_id=blog.id))
+    else:
+        form.title.data = blog.title
+        form.post.data= blog.post
+        
+      
+    return render_template('new_blog.html',blog_form=form, blog=blog)
 
 @main.route('/new_comment/<int:id>', methods=['GET', 'POST'])
 def new_comment(id):
@@ -122,34 +127,41 @@ def new_comment(id):
         new_comment = Comment(feedback=feedback, writer_id=current_user.id, blog_id=blogs.id)
         new_comment.save_comment()
         
-        return redirect(url_for('.index',uname=current_user.username))
+        return redirect(url_for('.index'))
     return render_template('comment.html',title=title, comment_form=form, blogs=blogs, comment=comment)
 
 
-@main.route("/blog/<int:id>/delete", methods=['GET', 'POST'])
+@main.route("/index/<int:id>/delete_post", methods=['GET', 'POST'])
 @login_required
 def delete_post(id):
-    blog=Blog.query.filter_by(id=id).first()
     
-    if blog is None:
+    current_blog=Blog.query.filter_by(id=id).first()
+    writer = Writer.query.filter_by(id=id).first()
+    
+    if current_blog is None:
         abort(404)
-        db.session.delete(blog)
-        db.session.commit()
+    db.session.delete(current_blog)
+    db.session.commit()
      
-    return redirect(url_for('main.index'))
+    return redirect(url_for('.index'))
 
 
-@main.route("/comment/<int:id>/delete", methods=['GET', 'POST'])
+@main.route("/index/<int:id>/delete_comment", methods=['GET', 'POST'])
 @login_required
 def delete_comment(id):
-    comment= Comment.query.filter_by(id=id).first()
+    current_blog= Comment.query.filter_by(id=id).first()
+    print(current_user.id)
+    print(current_blog.writer_id)
     
-    if comment is None:
+    if current_blog.writer_id != current_user.id:
         abort(404)
-        db.session.delete(comment)
+    else:
+        db.session.delete(current_blog)
         db.session.commit()
      
-    return redirect(url_for('main.index'))
+        return redirect(url_for('.index'))
+
+    # return render_template('comment.html', current_blog=current_blog)
 
     
         

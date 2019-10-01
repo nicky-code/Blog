@@ -19,6 +19,8 @@ class Writer(UserMixin,db.Model):
     blogger = db.relationship('Blog', backref='blogger', lazy='dynamic')
     bio = db.Column(db.String(255))
     profile_pic_path = db.Column(db.String())
+    comments = db.relationship('Comment')
+    blog = db.relationship('Blog', backref='writer', lazy='dynamic')
     
     @property
     def password(self):
@@ -64,12 +66,12 @@ class Blog(db.Model):
         Blog.all_blogs.clear()
         
     
-    def get_blogs(id):
+    def get_blogs(cls):
         blogs = Blog.query.filter_by(writer_id=id).all()
         return blogs
     
-    def get_blog(cls):
-        blogs = Blog.query.all()
+    def get_blog(id):
+        blogs = Blog.query.filter_by(writer_id=id).all()
         return blogs
         
         

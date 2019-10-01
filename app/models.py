@@ -15,12 +15,10 @@ class Writer(UserMixin,db.Model):
     id = db.Column(db.Integer,primary_key = True)
     username = db.Column(db.String(100))
     email = db.Column(db.String(100),unique = True,index = True)
-    password_secure = db.Column(db.String(80))
-    blogs = db.relationship('Blog', backref='blogger', lazy='dynamic')
+    pass_secure = db.Column(db.String(255))
+    blogger = db.relationship('Blog', backref='blogger', lazy='dynamic')
     bio = db.Column(db.String(255))
     profile_pic_path = db.Column(db.String())
-    
-    
     
     @property
     def password(self):
@@ -34,17 +32,16 @@ class Writer(UserMixin,db.Model):
     def verify_password(self,password):
         return check_password_hash(self.pass_secure,password)
         
-    
-    def __repr__(self):
-        return f'Writer {self.username}'
-    
-    
     def save_writer(self):
         Writer.all_writers.append(self)
         
     @classmethod
     def clear_writers(cls):
         Writer.all_writers.clear()
+        
+    
+    def __repr__(self):
+        return f'Writer {self.username}'    
     
     
 class Blog(db.Model):
@@ -76,16 +73,6 @@ class Blog(db.Model):
         return blogs
         
         
-    @classmethod
-    def count_blogs(cls,uname):
-        writer = Writer.query.filter_by(username=uname).first()
-        blogs = Blog.query.filter_by(writer_id=writer.id).all()
-        
-        blogs_count = 0
-        for blog in blogs:
-            blogs_count += 1
-            
-        return blogs_count    
     
     
 class Comment(db.Model):
@@ -101,7 +88,7 @@ class Comment(db.Model):
         
     @classmethod
     def get_comments(self,id):
-        comment = Comment.query.filter_by(writers_id = id).all()
+        comment = Comment.query.filter_by().all()
         return comment       
         
         

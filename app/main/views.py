@@ -13,32 +13,35 @@ def index():
     View root page function that returns the index page and its data
     '''
     
-    blog = Blog.query.all()
+    blogs = Blog.get_blog()
     comment=Comment.get_comments(id)
-    quotes =getQuotes
+    quotes =getQuotes()
     
     
-    return render_template('index.html', current_user= current_user, blog= blog,quotes=quotes)
+    return render_template('index.html', current_user= current_user, blogs= blogs, comment=comment, quotes=quotes)
 
 
-@main.route('/add/blog/new/<int:id>', methods = ['GET','POST'])
+@main.route('/add/blog', methods = ['GET','POST'])
 @login_required
-def new_blog():
+def new_blog(id):
     '''
     View new route function that returns a page with a form to create a blog
     '''
-
+    blog=Blog.query.filter_by(id=current_user.id)
+    writer = Writer.query.filter_by(id = current_user.id).first()
     form = BlogForm()
     
     if form.validate_on_submit():
-        name = form.name.data
-        new_blog= Blog(name=name)
-        new_blog.save_category()
+        title = form.title.data
+        post = form.post.data
+        
+        new_blog= Blog(post=post)
+        new_blog.save_blog()
         
         return redirect(url_for('.index'))
     
     title = 'New blog'
-    return render_template('new_blog.html', blog_form = form, title = title)
+    return render_template('new_blog.html', blog_form = form,title = title,current_user=current_user,)
      
      
 @main.route('/writer/<uname>')
@@ -130,8 +133,8 @@ def delete_post(id):
     
     if blog is None:
         abort(404)
-        db session.delete(blog)
-        db session.commit()
+        db.session.delete(blog)
+        db.session.commit()
      
     return redirect(url_for('main.index'))
 
@@ -143,8 +146,8 @@ def delete_comment(id):
     
     if comment is None:
         abort(404)
-        db session.delete(comment)
-        db session.commit()
+        db.session.delete(comment)
+        db.session.commit()
      
     return redirect(url_for('main.index'))
 

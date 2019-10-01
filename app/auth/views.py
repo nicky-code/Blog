@@ -6,7 +6,7 @@ from .forms import LoginForm,RegistrationForm
 from .. import db
 from ..email import mail_message
 
-@auth.route('/login')
+@auth.route('/login',methods =['GET','POST'])
 def login():
     login_form = LoginForm()
     if login_form.validate_on_submit():
@@ -29,10 +29,10 @@ def register():
         db.session.add(writer)
         db.session.commit()
         
-        mail_message("Welcome to Blog-Application","email/welcome_writer",writer.email,writer=writer)
-
-        
+        mail_message("Welcome to Blog-Application","email/welcome_writer",writer.email,writer=writer)      
         return redirect(url_for('auth.login'))
+        # print(writer.pass_secure)
+        
         title = "New Account"
     return render_template('auth/register.html',registration_form = form)
 

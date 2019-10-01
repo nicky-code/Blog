@@ -13,12 +13,12 @@ def index():
     View root page function that returns the index page and its data
     '''
     
-    blogs = Blog.get_blog()
+    blog = Blog.query.all()
     comment=Comment.get_comments(id)
     quotes =getQuotes()
     
     
-    return render_template('index.html', current_user= current_user, blogs= blogs, comment=comment, quotes=quotes)
+    return render_template('index.html',current_user=current_user,blog= blog, comment=comment, quotes=quotes)
 
 
 @main.route('/add/blog', methods = ['GET','POST'])

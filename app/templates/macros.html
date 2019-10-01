@@ -17,19 +17,17 @@
                         <p><strong>Blog PostedAt :</strong> {{blogs.postedAt}}</p>
                         <p><strong>Author`s Profile name:</strong>{{b.writers.username}}</p>
                         <p>For more information,kindly visit my Profile <a href="{{url_for('main.profile',uname=b.writers.username)}}">Click here</a></p>
+                        {% endfor %}
                         {% for com in b.comment %}
-                    <p><strong>Comment:</strong>{{com.feedback}}</p>
-                    <p><a href="{{url_for('main.delete_comment',id=com.id)}}">Click here if you want to delete your Comment</a></p>
-                {% endfor %}
+                        <p><strong>Comment:</strong>{{com.feedback}}</p>
+                        <p><a href="{{url_for('main.delete_comment',id=com.id)}}">Click here if you want to delete your Comment</a></p>
+                        {% endfor %}
                     </div>
                     <a href="{{url_for('main.new_comment',id=b.id)}}"><button type="button" class="btn btn-secondary" style="font-style: italic">ADD COMMENT</button></a>
                     <a href="{{url_for('main.delete_post',id=b.id)}}"><button type="button" class="btn btn-secondary" style="font-style: italic">DELETE</button></a>
                     <a href="{{url_for('main.blog_update',id=b.id)}}"><button type="button" class="btn btn-secondary" style="font-style: italic">UPDATE</button></a>
                     
                 </div>
-
-
-
             </div>
         
     {% endfor %}
